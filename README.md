@@ -22,4 +22,4 @@ Example of running an SIR process on an ER network and plotting the results.
 >>> plt.show()
 ```
 
-![SIR example](https://raw.githubusercontent.com/bolozna/compro/master/examples/sir_example.png "A SIR model run.")
+![SIR example](https://github.com/bolozna/compro/blob/master/examples/sir_example.png "A SIR model run.")
