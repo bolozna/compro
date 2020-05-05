@@ -21,3 +21,5 @@ Example of running an SIR process on an ER network and plotting the results.
 >>> plt.plot(t,c["S"],t,c["I"],t,c["R"]) 
 >>> plt.show()
 ```
+
+![Interevent time distribution](https://raw.githubusercontent.com/bolozna/compro/master/examples/sir_example.png "Naive and Kaplan-Meier estimates for the inter-event time distribution.")
