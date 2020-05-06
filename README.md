@@ -1,5 +1,9 @@
 
-Compartmental model processes on networks
+A simulator for compartmental model processes on networks. 
+
+"Because what the world needs right now is yet another epidemic model simulator."
+
+Each node is in one of the states specified by the user. The transitions of nodes from states to other take place with Poisson processes. The user can define the rates of spontaneous transitions or transitions due to the compartment of a neighboring node. 
 
 
 # Examples
