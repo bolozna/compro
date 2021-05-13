@@ -143,12 +143,16 @@ class CompartmentProcess(object):
             ncompartment=self.node_compartment[neighbor]
             if (compartment,ncompartment) in self.edgerates:
                 target,rate=self.edgerates[(compartment,ncompartment)]
+                if callable(rate):
+                    rate=rate(self.net[node][neighbor]['weight'])
                 event=(node,neighbor,target,rate)
                 self.events.add(event,rate)
                 self.node_events[node].append(event)
                 self.node_events[neighbor].append(event)
             if (ncompartment,compartment) in self.edgerates:
                 target,rate=self.edgerates[(ncompartment,compartment)]
+                if callable(rate):
+                    rate=rate(self.net[node][neighbor]['weight'])
                 event=(neighbor,node,target,rate)
                 self.events.add(event,rate)
                 self.node_events[neighbor].append(event)
