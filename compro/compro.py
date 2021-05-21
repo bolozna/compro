@@ -1,4 +1,5 @@
 import random,math,itertools
+from .sampletree import *
 
 class IndexedSet(object):
     """A set where each element also has an index from 0 to n-1. Indices are updated if
@@ -59,29 +60,46 @@ class EventRandomizer(object):
     """
     def __init__(self):
         self.rtoe={}
+        self.st=SampleTree()
         self.size=0
+        self.totrate=0
 
     def add(self,event,rate):
         if rate not in self.rtoe:
             self.rtoe[rate]=IndexedSet()
+            self.st.add(rate,rate)
+        else:
+            self.st.update_weight(rate,rate)
         self.rtoe[rate].add_element(event)
         self.size+=1
+        self.totrate+=rate
 
     def remove(self,event,rate):
         if rate in self.rtoe and self.rtoe[rate].remove_element(event,assertion=False):
             self.size-=1
+            self.st.update_weight(rate,-rate)
+            self.totrate-=rate
         
             #flush empty ones
             if len(self.rtoe[rate])==0:
                 del self.rtoe[rate]
+                self.st.remove(rate)
 
     def next(self):
-        events_weighted=dict((  (e,r*len(e)) for r,e in self.rtoe.items()))
-        totrate=sum( (r for e,r in events_weighted.items()  ) ) 
-        events=choice_weighted(events_weighted)
+        #events_weighted=dict((  (e,r*len(e)) for r,e in self.rtoe.items()))
+        #totrate=sum( (r for e,r in events_weighted.items()  ) ) 
+        #events=choice_weighted(events_weighted)
+        rate=self.st.sample()
+        events=self.rtoe[rate]
         event=events.pop_random()
-        dt=-math.log(random.uniform(0.0, 1.0)) / totrate
+        dt=-math.log(random.uniform(0.0, 1.0)) / self.totrate
+        
+        self.st.update_weight(rate,-rate)
+        if len(self.rtoe[rate])==0:
+            del self.rtoe[rate]
+            self.st.remove(rate)    
         self.size-=1
+        self.totrate-=rate
         return event, dt
 
 
